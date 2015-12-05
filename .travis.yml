@@ -9,3 +9,4 @@ script:
 before_script:
   - npm install -g bower
   - npm install
+  - bower install

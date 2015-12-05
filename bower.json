@@ -14,6 +14,12 @@
     "angular-mocks": "~1.4.8"
   },
   "ignore": [
-    "package.json"
+    ".gitignore",
+    ".travis.yml",
+    "bower_components",
+    "node_modules",
+    "karma.conf.js",
+    "package.json",
+    "gulpfile.js"
   ]
 }
