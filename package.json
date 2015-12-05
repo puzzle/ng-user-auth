@@ -1,0 +1,47 @@
+{
+  "name": "ng-user-auth",
+  "version": "0.0.1",
+  "description": "User authentication and authorization mdule for AngularJS.",
+  "main": "dist/ng-user-auth.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guggero/ng-user-auth.git"
+  },
+  "author": {
+    "name": "Oliver Gugger",
+    "email": "gugger@gmail.com"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-angular-filesort": "^1.1.1",
+    "gulp-complexity": "~0.3.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-header": "~1.7.1",
+    "gulp-ng-annotate": "^1.1.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "~1.4.2",
+    "karma": "^0.13.11",
+    "karma-angular-filesort": "^1.0.1",
+    "karma-coverage": "^0.5.2",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "lodash": "^3.10.1",
+    "wiredep": "^3.0.0-beta"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/guggero/ng-user-auth/issues"
+  },
+  "keywords": [
+    "angular",
+    "user",
+    "auth",
+    "authentication",
+    "authorization",
+    "interceptor",
+    "security",
+    "permission"
+  ],
+  "homepage": "https://github.com/guggero/ng-user-auth"
+}
