@@ -1,6 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
 var wiredep = require('wiredep');
 
 function listFiles() {
@@ -29,7 +28,7 @@ module.exports = function(config) {
     frameworks: ['jasmine', 'angular-filesort'],
 
     angularFilesort: {
-      whitelist: ['src/!(*.html|*.spec|*.mock).js']
+      whitelist: ['src/!(*.spec|*.mock).js']
     },
 
     browsers: ['PhantomJS'],
@@ -48,9 +47,8 @@ module.exports = function(config) {
     },
 
     coverageReporter: {
-      type: 'lcov',
-      dir: 'coverage',
-      subdir: '.'
+      type: 'html',
+      dir: 'coverage'
     }
   });
 };

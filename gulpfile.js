@@ -1,10 +1,13 @@
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 var concat = require('gulp-concat');
+var del = require('del');
+var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
-var plumber = require('gulp-plumber');
-var complexity = require('gulp-complexity');
+var angularFilesort = require('gulp-angular-filesort');
+var ngAnnotate = require('gulp-ng-annotate');
 var header = require('gulp-header');
+var karma = require('karma');
 var pkg = require('./package.json');
 
 var banner = ['/**',
@@ -14,27 +17,52 @@ var banner = ['/**',
   ' */',
   ''].join('\n');
 
-gulp.task('minify', function() {
+function runTests(singleRun, done) {
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: singleRun,
+    autoWatch: !singleRun
+  }, done).start();
+}
+
+gulp.task('minify', function () {
   return gulp.src([
       'src/*.js',
       '!src/*.mock.js',
       '!src/*.spec.js'
     ])
-    .pipe(plumber())
+    .pipe(angularFilesort())
+    .pipe(ngAnnotate())
     .pipe(concat('ng-user-auth.js'))
     .pipe(uglify())
-    .pipe(header(banner, { pkg: pkg }))
-    .pipe(rename({ suffix: '.min' }))
+    .pipe(header(banner, {pkg: pkg}))
+    .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('complexity', function() {
-  return gulp.src('src/*.js')
-    .pipe(complexity());
+gulp.task('testscripts', function () {
+  return gulp.src([
+      'src/*.js'
+    ])
+    .pipe(jshint());
 });
 
-gulp.task('watch', function() {
-  gulp.watch('src/*.js', ['minify']);
+gulp.task('watch', function () {
+  gulp.watch('src/*.js', function () {
+    gulp.start('testscripts');
+  });
 });
 
-gulp.task('default', ['watch']);
+gulp.task('clean', function (done) {
+  del('dist/*.js', done);
+});
+
+gulp.task('test', ['clean', 'testscripts'], function (done) {
+  runTests(true, done);
+});
+
+gulp.task('test:auto', ['watch'], function (done) {
+  runTests(false, done);
+});
+
+gulp.task('default', ['clean', 'minify']);

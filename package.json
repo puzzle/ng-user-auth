@@ -1,10 +1,10 @@
 {
   "name": "ng-user-auth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "User authentication and authorization mdule for AngularJS.",
   "main": "dist/ng-user-auth.min.js",
   "scripts": {
-    "test": "karma start"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -15,15 +15,16 @@
     "email": "gugger@gmail.com"
   },
   "devDependencies": {
+    "del": "^2.1.0",
     "gulp": "^3.9.0",
     "gulp-angular-filesort": "^1.1.1",
-    "gulp-complexity": "~0.3.2",
     "gulp-concat": "^2.6.0",
     "gulp-header": "~1.7.1",
+    "gulp-jshint": "^2.0.0",
     "gulp-ng-annotate": "^1.1.0",
-    "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "~1.4.2",
+    "jshint": "^2.8.0",
     "karma": "^0.13.11",
     "karma-angular-filesort": "^1.0.1",
     "karma-coverage": "^0.5.2",

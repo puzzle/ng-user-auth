@@ -4,7 +4,7 @@ node_js:
   - "4.1"
 
 script:
-  - ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run --browsers PhantomJS
+  - ./node_modules/karma/bin/karma start karma.conf.js
 
 before_script:
   - npm install -g bower
