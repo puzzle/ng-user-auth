@@ -64,12 +64,16 @@
         });
 
         $provide.factory('ngUserAuthInfoService', function ($q) {
-          ngUserAuthInfoServiceMock = jasmine.createSpyObj('ngUserAuthInfoService', ['checkPermissions', 'ready']);
+          ngUserAuthInfoServiceMock = jasmine.createSpyObj('ngUserAuthInfoService', [
+            'checkPermissions', 'whenReady', 'isReady', 'isLoggedIn'
+          ]);
           ngUserAuthInfoServiceMock.DEFAULT_LOGGED_IN_PERMISSION_NAME = 'token_read';
           ngUserAuthInfoServiceMock.checkPermissions.and.callFake(function () {
             return permissionOk;
           });
-          ngUserAuthInfoServiceMock.ready.and.returnValue($q.when());
+          ngUserAuthInfoServiceMock.whenReady.and.returnValue($q.when());
+          ngUserAuthInfoServiceMock.isReady.and.returnValue(true);
+          ngUserAuthInfoServiceMock.isLoggedIn.and.returnValue(true);
           return ngUserAuthInfoServiceMock;
         });
 

@@ -15,7 +15,9 @@
 
       module(function ($provide) {
         $provide.factory('ngUserAuthService', function ($q) {
-          ngUserAuthServiceMock = jasmine.createSpyObj('ngUserAuthService', ['isLoggedIn', 'getUserAuthInfo']);
+          ngUserAuthServiceMock = jasmine.createSpyObj('ngUserAuthService', [
+            'isLoggedIn', 'getUserAuthInfo'
+          ]);
           ngUserAuthServiceMock.isLoggedIn.and.callFake(function () {
             return loggedIn;
           });
@@ -63,8 +65,8 @@
         expect(ngUserAuthInfoService.isLoggedIn()).toBeTruthy();
       });
 
-      it('should resolve ready when ready', function () {
-        ngUserAuthInfoService.ready().then(function () {
+      it('should resolve whenReady when ready', function () {
+        ngUserAuthInfoService.whenReady().then(function () {
           expect(ngUserAuthInfoService.getUser()).toEqual(authInfo.user);
         });
       });

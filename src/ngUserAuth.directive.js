@@ -11,6 +11,10 @@
       link: linkNgUserAuth
     };
 
+    return directive;
+
+    //////////
+
     function linkNgUserAuth(scope, element, attrs) {
       // make sure that there will never be a property on the scope that matches a role name by providing an
       // empty isolated scope. otherwise the $eval() might have side effects
@@ -33,7 +37,5 @@
       toggleVisibilityBasedOnPermission();
       ngUserAuthInfoService.notifyOnAuthChange(toggleVisibilityBasedOnPermission);
     }
-
-    return directive;
   }
 })();

@@ -9,6 +9,7 @@ var ngAnnotate = require('gulp-ng-annotate');
 var header = require('gulp-header');
 var karma = require('karma');
 var pkg = require('./package.json');
+var browserSync = require('browser-sync').create();
 
 var banner = ['/**',
   ' * ng-user-auth <%= pkg.version %>',
@@ -50,6 +51,14 @@ gulp.task('testscripts', function () {
 gulp.task('watch', function () {
   gulp.watch('src/*.js', function () {
     gulp.start('testscripts');
+  });
+});
+
+gulp.task('serve',  function() {
+  browserSync.init({
+    server: {
+      baseDir: './'
+    }
   });
 });
 

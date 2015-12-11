@@ -8,12 +8,12 @@
   /** @ngInject */
   function ngUserAuthService($rootScope, lodash, $injector, localStorageService, $location, $http) {
 
-    // user and session information
-    var userToken, userAuthInfoPromise;
-
     var AUTH_INFO_CHANGED_EVENT_NAME = 'ngUserAuth:userPermissionsChanged';
     var LOGIN_STATE_CHANGED_EVENT_NAME = 'ngUserAuth:userLoginStateChanged';
     var USER_TOKEN_STORAGE_KEY = 'user.token';
+
+    // user and session information
+    var userToken, userAuthInfoPromise;
 
     var service = {
       isLoggedIn: isLoggedIn,
@@ -29,7 +29,7 @@
 
     return service;
 
-    ////////////
+    //////////
 
     function goToLoginScreen() {
       $injector.get('$mdDialog').hide();
@@ -93,6 +93,7 @@
       userToken = null;
       localStorageService.remove(USER_TOKEN_STORAGE_KEY);
       $rootScope.$broadcast(LOGIN_STATE_CHANGED_EVENT_NAME, false);
+      $rootScope.$broadcast(AUTH_INFO_CHANGED_EVENT_NAME, {user: null, permissions: []});
       userAuthInfoPromise = null;
     }
   }

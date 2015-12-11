@@ -1,20 +1,23 @@
 {
   "name": "ng-user-auth",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "User authentication and authorization mdule for AngularJS.",
   "main": "dist/ng-user-auth.min.js",
   "scripts": {
-    "test": "gulp test"
+    "install": "bower install",
+    "test": "gulp test",
+    "start": "gulp serve"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guggero/ng-user-auth.git"
+    "url": "https://github.com/puzzle/ng-user-auth.git"
   },
   "author": {
-    "name": "Oliver Gugger",
-    "email": "gugger@gmail.com"
+    "name": "Puzzle ITC",
+    "email": "info@puzzle.ch"
   },
   "devDependencies": {
+    "browser-sync": "^2.10.0",
     "del": "^2.1.0",
     "gulp": "^3.9.0",
     "gulp-angular-filesort": "^1.1.1",
@@ -35,7 +38,7 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/guggero/ng-user-auth/issues"
+    "url": "https://github.com/puzzle/ng-user-auth/issues"
   },
   "keywords": [
     "angular",
@@ -47,5 +50,5 @@
     "security",
     "permission"
   ],
-  "homepage": "https://github.com/guggero/ng-user-auth"
+  "homepage": "https://github.com/puzzle/ng-user-auth"
 }

@@ -8,26 +8,16 @@
   /** @ngInject */
   function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
 
-    // user and session information
-    var loggedIn, user, userPermissions, readyPromise;
-
     var DEFAULT_LOGGED_IN_PERMISSION_NAME = 'token_read';
 
-    // trigger initial load
-    loggedIn = ngUserAuthService.isLoggedIn();
-    $rootScope.$on(ngUserAuthService.LOGIN_STATE_CHANGED_EVENT_NAME, function (event, isLoggedIn) {
-      loggedIn = isLoggedIn;
-    });
-
-    // expose the user to the root scope
-    readyPromise = $q.defer();
-    ngUserAuthService.getUserAuthInfo().then(setAuthInfo);
-    notifyOnAuthChange(setAuthInfo);
+    // user and session information
+    var loggedIn, user, userPermissions, readyPromise, ready;
 
     var service = {
       notifyOnAuthChange: notifyOnAuthChange,
       isLoggedIn: isLoggedIn,
-      ready: ready,
+      isReady: isReady,
+      whenReady: whenReady,
       getUser: getUser,
       userBelongsTo: userBelongsTo,
       userHasPermission: hasPermission,
@@ -37,9 +27,25 @@
       DEFAULT_LOGGED_IN_PERMISSION_NAME: DEFAULT_LOGGED_IN_PERMISSION_NAME
     };
 
+    activate();
+
     return service;
 
-    ////////////
+    //////////
+
+    function activate() {
+      // trigger initial load
+      loggedIn = ngUserAuthService.isLoggedIn();
+      $rootScope.$on(ngUserAuthService.LOGIN_STATE_CHANGED_EVENT_NAME, function (event, isLoggedIn) {
+        loggedIn = isLoggedIn;
+      });
+
+      // expose the user to the root scope
+      readyPromise = $q.defer();
+      ready = false;
+      ngUserAuthService.getUserAuthInfo().then(setAuthInfo, handleError);
+      notifyOnAuthChange(setAuthInfo);
+    }
 
     function notifyOnAuthChange(fn) {
       $rootScope.$on(ngUserAuthService.AUTH_INFO_CHANGED_EVENT_NAME, function (event, authInfo) {
@@ -51,8 +57,12 @@
       return loggedIn;
     }
 
-    function ready() {
+    function whenReady() {
       return readyPromise.promise;
+    }
+
+    function isReady() {
+      return ready;
     }
 
     function getUser() {
@@ -60,11 +70,17 @@
     }
 
     function setAuthInfo(authInfo) {
-      // signal everybody who wants to know that we're ready
+      // signal everybody who wants to know that we're whenReady
       readyPromise.resolve();
+      ready = true;
 
       user = authInfo.user;
       userPermissions = authInfo.permissions;
+    }
+
+    function handleError(error) {
+      readyPromise.reject(error);
+      ready = true;
     }
 
     function userBelongsTo(type) {

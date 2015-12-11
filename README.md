@@ -4,4 +4,4 @@
 
 User authentication and authorization module for AngularJS.
 
-This is work in progress, please be patient. I'll add a HOW TO USE section here as soon as the module is ready to be used.
+This is work in progress, please be patient. We'll add a HOW TO USE section here as soon as the module is ready to be used.

@@ -1,10 +1,10 @@
 {
-  "author": "Oliver Gugger",
+  "author": "Puzzle ITC",
   "name": "ng-user-auth",
-  "homepage": "https://github.com/guggero/ng-user-auth",
+  "homepage": "https://github.com/puzzle/ng-user-auth",
   "repository": {
     "type": "git",
-    "url": "git://github.com/guggero/ng-user-auth.git"
+    "url": "git://github.com/puzzle/ng-user-auth.git"
   },
   "main": "./dist/ng-user-auth.min.js",
   "dependencies": {
