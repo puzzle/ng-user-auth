@@ -5,3 +5,13 @@
 User authentication and authorization module for AngularJS.
 
 This is work in progress, please be patient. We'll add a HOW TO USE section here as soon as the module is ready to be used.
+
+## Installation
+
+* npm install -g bower
+* npm install
+* bower install
+
+## Run example/demo page
+
+* npm start
