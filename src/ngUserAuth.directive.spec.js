@@ -49,28 +49,28 @@
 
         // then
         expect(element.css('display')).toBe('block');
-        expect(ngUserAuthInfoServiceMock.checkPermissions).toHaveBeenCalledWith(undefined, undefined, undefined, undefined);
+        expect(ngUserAuthInfoServiceMock.checkPermissions).toHaveBeenCalledWith(undefined, undefined, undefined);
       });
 
       it('checks all attributes on single values', function () {
         // when
         setupDirective('<div ng-user-auth has-permission="str1" has-any-permission="str2" ' +
-          'lacks-permission="str3" is-user-type="str4"></div>');
+          'lacks-permission="str3"></div>');
 
         // then
         expect(element.css('display')).toBe('block');
-        expect(ngUserAuthInfoServiceMock.checkPermissions).toHaveBeenCalledWith('str1', 'str2', 'str3', 'str4');
+        expect(ngUserAuthInfoServiceMock.checkPermissions).toHaveBeenCalledWith('str1', 'str2', 'str3');
       });
 
       it('checks all attributes on multiple values', function () {
         // when
         setupDirective('<div ng-user-auth has-permission="[\'str1\', \'str2\']" ' +
-          'has-any-permission="[\'str3\', \'str4\']" lacks-permission="[\'str5\', \'str6\']" is-user-type="str7"></div>');
+          'has-any-permission="[\'str3\', \'str4\']" lacks-permission="[\'str5\', \'str6\']"></div>');
 
         // then
         expect(element.css('display')).toBe('block');
         expect(ngUserAuthInfoServiceMock.checkPermissions)
-          .toHaveBeenCalledWith(['str1', 'str2'], ['str3', 'str4'], ['str5', 'str6'], 'str7');
+          .toHaveBeenCalledWith(['str1', 'str2'], ['str3', 'str4'], ['str5', 'str6']);
       });
 
       it('toggles the element when permissions change', function () {
@@ -79,7 +79,7 @@
 
         // then
         expect(element.css('display')).toBe('block');
-        expect(ngUserAuthInfoServiceMock.checkPermissions).toHaveBeenCalledWith(undefined, undefined, 'user', undefined);
+        expect(ngUserAuthInfoServiceMock.checkPermissions).toHaveBeenCalledWith(undefined, undefined, 'user');
         expect(callback).toEqual(jasmine.any(Function));
 
         // when

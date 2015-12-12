@@ -18,11 +18,12 @@ var banner = ['/**',
   ' */',
   ''].join('\n');
 
-function runTests(singleRun, done) {
+function runTests(singleRun, done, coverage) {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: singleRun,
-    autoWatch: !singleRun
+    autoWatch: !singleRun,
+    preprocessors: coverage ? {'src/*.js': ['coverage']} : {}
   }, done).start();
 }
 
@@ -67,11 +68,11 @@ gulp.task('clean', function (done) {
 });
 
 gulp.task('test', ['clean', 'testscripts'], function (done) {
-  runTests(true, done);
+  runTests(true, done, true);
 });
 
 gulp.task('test:auto', ['watch'], function (done) {
-  runTests(false, done);
+  runTests(false, done, false);
 });
 
 gulp.task('default', ['clean', 'minify']);

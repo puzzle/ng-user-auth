@@ -34,16 +34,14 @@
           data: {
             hasPermission: 'str1',
             hasAnyPermission: 'str2',
-            lacksPermission: 'str3',
-            isUserType: 'str4'
+            lacksPermission: 'str3'
           }
         });
         $stateProvider.state('multiple_values', {
           data: {
             hasPermission: ['str1', 'str2'],
             hasAnyPermission: ['str3', 'str4'],
-            lacksPermission: ['str5', 'str6'],
-            isUserType: 'str7'
+            lacksPermission: ['str5', 'str6']
           }
         });
 
@@ -104,7 +102,7 @@
 
         // then
         expect($state.current.name).toBe('single_values');
-        expect(ngUserAuthInfoServiceMock.checkPermissions).toHaveBeenCalledWith(['str1', 'token_read'], 'str2', 'str3', 'str4');
+        expect(ngUserAuthInfoServiceMock.checkPermissions).toHaveBeenCalledWith(['str1', 'token_read'], 'str2', 'str3');
       });
 
       it('should pass state transition on multiple values', function () {
@@ -119,7 +117,7 @@
         // then
         expect($state.current.name).toBe('multiple_values');
         expect(ngUserAuthInfoServiceMock.checkPermissions)
-          .toHaveBeenCalledWith(['str1', 'str2', 'token_read'], ['str3', 'str4'], ['str5', 'str6'], 'str7');
+          .toHaveBeenCalledWith(['str1', 'str2', 'token_read'], ['str3', 'str4'], ['str5', 'str6']);
       });
 
       it('should fail state transitions', function () {

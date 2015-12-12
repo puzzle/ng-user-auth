@@ -23,11 +23,10 @@
       var hasPermission = evalScope.$eval(attrs.hasPermission) || attrs.hasPermission;
       var hasAnyPermission = evalScope.$eval(attrs.hasAnyPermission) || attrs.hasAnyPermission;
       var lacksPermission = evalScope.$eval(attrs.lacksPermission) || attrs.lacksPermission;
-      var isUserType = evalScope.$eval(attrs.isUserType) || attrs.isUserType;
 
       // closure so we can re-calculate when permissions change
       function toggleVisibilityBasedOnPermission() {
-        if (ngUserAuthInfoService.checkPermissions(hasPermission, hasAnyPermission, lacksPermission, isUserType)) {
+        if (ngUserAuthInfoService.checkPermissions(hasPermission, hasAnyPermission, lacksPermission)) {
           element.show();
         } else {
           element.hide();

@@ -15,3 +15,16 @@ This is work in progress, please be patient. We'll add a HOW TO USE section here
 ## Run example/demo page
 
 * npm start
+
+## Configuration
+
+    myApp.config(["ngUserAuthServiceProvider", function(ngUserAuthServiceProvider) {
+      ngUserAuthServiceProvider.setApiEndpoint('/authentication');
+      ngUserAuthServiceProvider.setUnauthorizedUrl('/unauthorized');
+      ngUserAuthServiceProvider.setRequestedPathParameterName('requestedPath');
+      ngUserAuthServiceProvider.setAbortRequestsUrlPrefix('/');
+    }]);
+
+#### Todo
+* document config values
+* goToLoginScreen: make configurable, for example hide dialogs

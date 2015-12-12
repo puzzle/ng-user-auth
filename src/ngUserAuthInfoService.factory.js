@@ -19,7 +19,6 @@
       isReady: isReady,
       whenReady: whenReady,
       getUser: getUser,
-      userBelongsTo: userBelongsTo,
       userHasPermission: hasPermission,
       userHasAnyPermission: hasAnyPermission,
       userLacksPermission: lacksPermission,
@@ -83,10 +82,6 @@
       ready = true;
     }
 
-    function userBelongsTo(type) {
-      return user.type === type;
-    }
-
     function hasPermission(requiredPermissions) {
       var permissions = sanitizePermissionArray(requiredPermissions);
 
@@ -141,7 +136,7 @@
       return permissionArray;
     }
 
-    function checkPermissions(checkHasPermission, checkHasAnyPermission, checkLacksPermission, isUserType) {
+    function checkPermissions(checkHasPermission, checkHasAnyPermission, checkLacksPermission) {
       var checkOk = true;
 
       // hide if user does not have all required permissions
@@ -156,11 +151,6 @@
 
       // hide if user does have some of the forbidden permissions
       if (!lacksPermission(checkLacksPermission)) {
-        checkOk = false;
-      }
-
-      // hide if user is not of given user type
-      if (!lodash.isEmpty(isUserType) && lodash.isString(isUserType) && !userBelongsTo(isUserType)) {
         checkOk = false;
       }
 

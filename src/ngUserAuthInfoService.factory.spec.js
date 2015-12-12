@@ -71,36 +71,27 @@
         });
       });
 
-      it('should check if user belongs to SWOA', function () {
-        // when
-        var result = ngUserAuthInfoService.userBelongsTo('SWOA');
-
-        // then
-        expect(result).toBeTruthy();
-      });
-
       it('should check the permissions', function () {
         // should pass permission checks
         expect(ngUserAuthInfoService.checkPermissions()).toBeTruthy();
-        expect(ngUserAuthInfoService.checkPermissions(null, null, null, null)).toBeTruthy();
-        expect(ngUserAuthInfoService.checkPermissions(undefined, undefined, undefined, undefined)).toBeTruthy();
-        expect(ngUserAuthInfoService.checkPermissions([], [], [], [])).toBeTruthy();
-        expect(ngUserAuthInfoService.checkPermissions('', '', '', '')).toBeTruthy();
+        expect(ngUserAuthInfoService.checkPermissions(null, null, null)).toBeTruthy();
+        expect(ngUserAuthInfoService.checkPermissions(undefined, undefined, undefined)).toBeTruthy();
+        expect(ngUserAuthInfoService.checkPermissions([], [], [])).toBeTruthy();
+        expect(ngUserAuthInfoService.checkPermissions('', '', '')).toBeTruthy();
         expect(ngUserAuthInfoService.checkPermissions(['token_read'])).toBeTruthy();
         expect(ngUserAuthInfoService.checkPermissions(['token_read', 'user'])).toBeTruthy();
         expect(ngUserAuthInfoService.checkPermissions([], ['token_read', 'user'])).toBeTruthy();
         expect(ngUserAuthInfoService.checkPermissions([], ['token_read', 'superman'])).toBeTruthy();
         expect(ngUserAuthInfoService.checkPermissions([], [], ['superman'])).toBeTruthy();
         expect(ngUserAuthInfoService.checkPermissions([], [], ['superman', 'batman'])).toBeTruthy();
-        expect(ngUserAuthInfoService.checkPermissions([], [], [], 'SWOA')).toBeTruthy();
-        expect(ngUserAuthInfoService.checkPermissions(['user'], ['admin'], ['superman'], 'SWOA')).toBeTruthy();
-        expect(ngUserAuthInfoService.checkPermissions(['user', 'admin'], ['admin', 'root'], ['superman', 'batman'], 'SWOA')).toBeTruthy();
+        expect(ngUserAuthInfoService.checkPermissions([], [], [])).toBeTruthy();
+        expect(ngUserAuthInfoService.checkPermissions(['user'], ['admin'], ['superman'])).toBeTruthy();
+        expect(ngUserAuthInfoService.checkPermissions(['user', 'admin'], ['admin', 'root'], ['superman', 'batman'])).toBeTruthy();
 
         // should fail permission checks
         expect(ngUserAuthInfoService.checkPermissions(['superman'], [], [])).toBeFalsy();
         expect(ngUserAuthInfoService.checkPermissions([], ['superman'], [])).toBeFalsy();
         expect(ngUserAuthInfoService.checkPermissions([], [], ['user'])).toBeFalsy();
-        expect(ngUserAuthInfoService.checkPermissions([], [], [], 'ASSOCIATION')).toBeFalsy();
       });
     });
   });

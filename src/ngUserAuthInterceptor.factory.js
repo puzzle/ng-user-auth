@@ -6,7 +6,7 @@
     .factory('ngUserAuthInterceptor', ngUserAuthInterceptor);
 
   /** @ngInject */
-  function ngUserAuthInterceptor($q, ngUserAuthService, Config) {
+  function ngUserAuthInterceptor($q, ngUserAuthService) {
     // promises needed to cancel $http calls that have been intercepted
     var cancelPromises = [];
 
@@ -22,14 +22,16 @@
 
     function handleRequest(config) {
       config = config || {};
+      var abortPrefix = ngUserAuthService.getAbortRequestsUrlPrefix();
 
-      // only cancel API calls
-      if (Config.api && Config.api.url && config.url && config.url.indexOf(Config.api.url) < 0) {
+      // we only want to cancel requests where the response status matters (e.g. only REST API calls).
+      // otherwise don't cancel the request on routhe change
+      if (abortPrefix && config.url.indexOf(abortPrefix) < 0) {
         config.noCancelOnRouteChange = true;
       }
 
-      // add a timeout promise to each request so we can cancel them if we intercept a 401/403 response
-      // adjusted to our needs from https://github.com/AlbertBrand/angular-cancel-on-navigate
+      // add a timeout promise to each request so we can cancel them if we intercept a 401/403 response.
+      // inspiration found on https://github.com/AlbertBrand/angular-cancel-on-navigate, optimized it for this module
       if (config.timeout === undefined && !config.noCancelOnRouteChange) {
         config.$timeout = newTimeout();
         config.timeout = config.$timeout.promise;

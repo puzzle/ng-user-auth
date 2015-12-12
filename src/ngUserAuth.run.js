@@ -32,8 +32,7 @@
           var check = ngUserAuthInfoService.checkPermissions(
             stateParams.hasPermission,
             stateParams.hasAnyPermission,
-            stateParams.lacksPermission,
-            stateParams.isUserType);
+            stateParams.lacksPermission);
 
           if (!ngUserAuthInfoService.isLoggedIn()) {
             ngUserAuthService.goToLoginScreen();
@@ -55,12 +54,11 @@
     }
 
     function checkStateParams(state) {
-      var hasPermission = [], hasAnyPermission, lacksPermission, isUserType, redirectTo;
+      var hasPermission = [], hasAnyPermission, lacksPermission, redirectTo;
       if (state.data) {
         hasPermission = safeArray(state.data.hasPermission);
         hasAnyPermission = state.data.hasAnyPermission;
         lacksPermission = state.data.lacksPermission;
-        isUserType = state.data.isUserType;
         redirectTo = state.data.redirectTo;
       }
 
@@ -73,7 +71,6 @@
         hasPermission: hasPermission,
         hasAnyPermission: hasAnyPermission,
         lacksPermission: lacksPermission,
-        isUserType: isUserType,
         redirectTo: redirectTo,
         needsCheck: (hasPermission.length > 0 || hasAnyPermission || lacksPermission)
       };
