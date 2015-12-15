@@ -61,9 +61,20 @@
 
       function goToLoginScreen() {
         var path = $location.path();
-        if (path.indexOf(unauthorizedUrl) < 0) {
-          $location.url(unauthorizedUrl + '?' + requestedPathParameterName + '=' + $location.path());
+        var currentState = findCurrentStateByUrl(path);
+        if (path.indexOf(unauthorizedUrl) < 0 && (!currentState || !currentState.data || !currentState.data.anonymousAccessAllowed)) {
+          $location.url(unauthorizedUrl + '?' + requestedPathParameterName + '=' + path);
         }
+      }
+      
+      function findCurrentStateByUrl(path) {
+        var allStates = $injector.get('$state').get();
+  
+        var index = lodash.findIndex(allStates, function (state) {
+          return state.url === path;
+        });
+  
+        return allStates[index];
       }
 
       function isLoggedIn() {
