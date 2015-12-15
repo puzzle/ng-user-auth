@@ -49,7 +49,7 @@
 
         // when the promise was not immediately resolved, it means we aren't ready yet.
         // so we stop the default behaviour and wait for the promise to resolve
-        if (!ngUserAuthInfoService.isReady() || !userAuthInfoService.isLoggedIn()) {
+        if (!ngUserAuthInfoService.isReady() || !ngUserAuthInfoService.isLoggedIn()) {
           event.preventDefault();
         }
       }
