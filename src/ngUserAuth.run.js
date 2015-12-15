@@ -43,11 +43,13 @@
               $state.go(toState.name, toParams);
             }
           }
+        }, function () {
+          doRedirect(stateParams.redirectTo, toParams);
         });
 
         // when the promise was not immediately resolved, it means we aren't ready yet.
         // so we stop the default behaviour and wait for the promise to resolve
-        if (!ngUserAuthInfoService.isReady()) {
+        if (!ngUserAuthInfoService.isReady() || !userAuthInfoService.isLoggedIn()) {
           event.preventDefault();
         }
       }
