@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('ngUserAuth', function () {
+  describe('ngUserAuth.run', function () {
 
     var $rootScope, $state, permissionOk, ngUserAuthInfoServiceMock;
 
@@ -9,7 +9,7 @@
      * Global injects and setups
      */
     beforeEach(function () {
-      module('ngUserAuth');
+      module('ngUserAuth.run');
 
       module(function ($stateProvider, $provide) {
         // default/fallback states
@@ -63,9 +63,9 @@
 
         $provide.factory('ngUserAuthInfoService', function ($q) {
           ngUserAuthInfoServiceMock = jasmine.createSpyObj('ngUserAuthInfoService', [
-            'checkPermissions', 'whenReady', 'isReady', 'isLoggedIn'
+            'checkPermissions', 'whenReady', 'isReady', 'isLoggedIn', 'getDefaultLoggedInPermissionName'
           ]);
-          ngUserAuthInfoServiceMock.DEFAULT_LOGGED_IN_PERMISSION_NAME = 'token_read';
+          ngUserAuthInfoServiceMock.getDefaultLoggedInPermissionName.and.returnValue('token_read');
           ngUserAuthInfoServiceMock.checkPermissions.and.callFake(function () {
             return permissionOk;
           });

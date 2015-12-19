@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('ngUserAuth')
+    .module('ngUserAuth.run', ['ngLodash', 'ngUserAuth.service', 'ngUserAuthInfo.service', 'ui.router'])
     .run(runBlock);
 
   /** @ngInject */
@@ -66,7 +66,7 @@
 
       // anonymous access?
       if (!state || !state.data || !state.data.anonymousAccessAllowed) {
-        hasPermission.push(ngUserAuthInfoService.DEFAULT_LOGGED_IN_PERMISSION_NAME);
+        hasPermission.push(ngUserAuthService.getDefaultLoggedInPermissionName());
       }
 
       return {

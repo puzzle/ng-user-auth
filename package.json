@@ -1,6 +1,6 @@
 {
   "name": "ng-user-auth",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "User authentication and authorization mdule for AngularJS.",
   "main": "dist/ng-user-auth.min.js",
   "scripts": {
@@ -16,11 +16,14 @@
     "email": "info@puzzle.ch"
   },
   "devDependencies": {
+    "body-parser": "^1.14.2",
     "browser-sync": "^2.10.0",
     "del": "^2.1.0",
+    "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-angular-filesort": "^1.1.1",
     "gulp-concat": "^2.6.0",
+    "gulp-develop-server": "^0.5.0",
     "gulp-header": "~1.7.1",
     "gulp-jshint": "^2.0.0",
     "gulp-ng-annotate": "^1.1.0",

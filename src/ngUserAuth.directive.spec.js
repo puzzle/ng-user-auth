@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('ngUserAuth', function () {
+  describe('ngUserAuth.directive', function () {
 
     var ngUserAuthInfoServiceMock, permissionOk, callback;
     var $compile, $rootScope, element;
@@ -10,7 +10,7 @@
      * Global injects and setups
      */
     beforeEach(function () {
-      module('ngUserAuth');
+      module('ngUserAuth.directive');
 
       module(function ($provide) {
         $provide.factory('ngUserAuthInfoService', function () {

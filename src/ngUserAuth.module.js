@@ -3,8 +3,11 @@
 
   angular
     .module('ngUserAuth', [
-      'ui.router',
-      'ngLodash',
-      'LocalStorageModule'
+      'ngUserAuth.config',
+      'ngUserAuth.directive',
+      'ngUserAuth.interceptor',
+      'ngUserAuth.run',
+      'ngUserAuth.service',
+      'ngUserAuthInfo.service'
     ]);
 })();

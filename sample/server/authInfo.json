@@ -1,0 +1,7 @@
+{
+  "token": "mySecureToken",
+  "permissions": ["token_read"],
+  "user": {
+    "name": "alice"
+  }
+}

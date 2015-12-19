@@ -2,13 +2,11 @@
   'use strict';
 
   angular
-    .module('ngUserAuth')
+    .module('ngUserAuthInfo.service', ['ngUserAuth.service', 'ngLodash'])
     .factory('ngUserAuthInfoService', ngUserAuthInfoService);
 
   /** @ngInject */
   function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
-
-    var DEFAULT_LOGGED_IN_PERMISSION_NAME = 'token_read';
 
     // user and session information
     var loggedIn, user, userPermissions, readyPromise, ready;
@@ -22,8 +20,7 @@
       userHasPermission: hasPermission,
       userHasAnyPermission: hasAnyPermission,
       userLacksPermission: lacksPermission,
-      checkPermissions: checkPermissions,
-      DEFAULT_LOGGED_IN_PERMISSION_NAME: DEFAULT_LOGGED_IN_PERMISSION_NAME
+      checkPermissions: checkPermissions
     };
 
     activate();

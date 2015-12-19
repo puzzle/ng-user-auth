@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  describe('ngUserAuth', function () {
+  describe('ngUserAuthInfo.service', function () {
 
     var loggedIn, authInfo;
     var ngUserAuthInfoService, ngUserAuthServiceMock;
@@ -11,7 +11,7 @@
      * Global injects and setups
      */
     beforeEach(function () {
-      module('ngUserAuth');
+      module('ngUserAuthInfo.service');
 
       module(function ($provide) {
         $provide.factory('ngUserAuthService', function ($q) {

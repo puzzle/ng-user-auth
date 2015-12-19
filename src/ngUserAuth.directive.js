@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('ngUserAuth')
+    .module('ngUserAuth.directive', ['ngUserAuthInfo.service'])
     .directive('ngUserAuth', ngUserAuth);
 
   /** @ngInject */

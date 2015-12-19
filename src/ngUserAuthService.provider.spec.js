@@ -1,9 +1,9 @@
 (function () {
   'use strict';
 
-  describe('ngUserAuth', function () {
+  describe('ngUserAuth.service', function () {
 
-    var ngUserAuthService, ngUserAuthServiceMock, $httpBackend, localStorageService;
+    var ngUserAuthService, $httpBackend, localStorageService;
 
     var USER_TOKEN_STORAGE_KEY = 'user.token';
     var USER_TOKEN = 'abcdefgh';
@@ -22,15 +22,12 @@
      * Global injects and setups
      */
     beforeEach(function () {
-      module('ngUserAuth');
+      module('ngUserAuth.service');
 
       inject(function ($injector) {
-        ngUserAuthServiceMock = $injector.get('ngUserAuthService');
+        ngUserAuthService = $injector.get('ngUserAuthService');
         $httpBackend = $injector.get('$httpBackend');
         localStorageService = $injector.get('localStorageService');
-
-        // test original service instead of the mocked version!!!
-        ngUserAuthService = ngUserAuthServiceMock.original;
       });
     });
 

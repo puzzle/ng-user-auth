@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('ngUserAuth')
+    .module('ngUserAuth.interceptor', ['ngUserAuth.service'])
     .factory('ngUserAuthInterceptor', ngUserAuthInterceptor);
 
   /** @ngInject */
@@ -40,6 +40,7 @@
       // if we have a token, add it to the header
       var userToken = ngUserAuthService.getUserToken();
       if (userToken) {
+        config.headers = config.headers || {};
         config.headers.Authorization = 'Bearer ' + userToken;
       }
       return config;

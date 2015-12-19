@@ -11,7 +11,9 @@
     .config(sampleConfig)
     .run(sampleRun);
 
-  function sampleConfig($urlRouterProvider, $stateProvider) {
+  function sampleConfig($urlRouterProvider, $stateProvider, ngUserAuthServiceProvider) {
+
+    ngUserAuthServiceProvider.setAbortRequestsUrlPrefix('/authentication');
 
     // Default URL if no other matches
     $urlRouterProvider.otherwise('/home');
@@ -19,7 +21,7 @@
     $stateProvider
       .state('home', {
         url: '/home',
-        template: '<h1>Home</h1>'
+        template: '<h1>Home</h1><a ui-sref="logout()">Logout</a>'
       })
       .state('forbidden', {
         url: '/forbidden',
@@ -30,32 +32,21 @@
       })
       .state('login', {
         url: '/login',
-        templateUrl: 'pages/login.html',
-        controller: 'LoginController',
-        controllerAs: 'vm',
+        template: '<login></login>',
         data: {
           anonymousAccessAllowed: true
         }
       })
       .state('logout', {
         url: '/logout',
-        templateUrl: 'pages/login.html',
-        controller: 'LoginController',
-        controllerAs: 'vm',
+        template: '<logout></logout>',
         data: {
           anonymousAccessAllowed: true
-        },
-        params: {
-          doLogout: {
-            value: true
-          }
         }
       })
       .state('unauthorized', {
         url: '/unauthorized?requestedPath',
-        templateUrl: 'pages/login.html',
-        controller: 'LoginController',
-        controllerAs: 'vm',
+        template: '<login></login>',
         data: {
           anonymousAccessAllowed: true
         },

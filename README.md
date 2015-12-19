@@ -23,8 +23,12 @@ This is work in progress, please be patient. We'll add a HOW TO USE section here
       ngUserAuthServiceProvider.setUnauthorizedUrl('/unauthorized');
       ngUserAuthServiceProvider.setRequestedPathParameterName('requestedPath');
       ngUserAuthServiceProvider.setAbortRequestsUrlPrefix('/');
+      ngUserAuthServiceProvider.addLogoutAction(function ($injector) {
+        $injector.get('$mdDialog').hide();
+      });
+      ngUserAuthServiceProvider.setDefaultLoggedInPermissionName('token_read');
     }]);
 
 #### Todo
 * document config values
-* goToLoginScreen: make configurable, for example hide dialogs
+

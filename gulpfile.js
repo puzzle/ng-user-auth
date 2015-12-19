@@ -9,7 +9,9 @@ var ngAnnotate = require('gulp-ng-annotate');
 var header = require('gulp-header');
 var karma = require('karma');
 var pkg = require('./package.json');
-var browserSync = require('browser-sync').create();
+var server = require('gulp-develop-server');
+var browserSync = require('browser-sync');
+var karmaParseConfig = require('karma/lib/config').parseConfig;
 
 var banner = ['/**',
   ' * ng-user-auth <%= pkg.version %>',
@@ -18,14 +20,49 @@ var banner = ['/**',
   ' */',
   ''].join('\n');
 
-function runTests(singleRun, done, coverage) {
-  new karma.Server({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: singleRun,
-    autoWatch: !singleRun,
-    preprocessors: coverage ? {'src/*.js': ['coverage']} : {}
-  }, done).start();
+function runKarma(configFileName, options, done) {
+  var config = karmaParseConfig(__dirname + '/' + configFileName, {});
+
+  Object.keys(options).forEach(function (key) {
+    config[key] = options[key];
+  });
+
+  new karma.Server(config, function (exitCode) {
+    done();
+    process.exit(exitCode);
+  }).start();
 }
+
+var options = {
+  server: {
+    path: './sample/server/server.js',
+    execArgv: ['--harmony']
+  },
+  browserSync: {
+    proxy: 'http://localhost:3000'
+  }
+};
+
+gulp.task('server:start', function () {
+  server.listen(options.server, function (error) {
+    if (!error) {
+      browserSync(options.browserSync);
+    }
+  });
+});
+
+// If server scripts change, restart the server and then browser-reload.
+gulp.task('server:restart', function () {
+  server.restart(function (error) {
+    if (!error) {
+      browserSync.reload();
+    }
+  });
+});
+
+gulp.task('serve', ['server:start'], function () {
+  gulp.watch([options.server.path], ['server:restart']);
+});
 
 gulp.task('minify', function () {
   return gulp.src([
@@ -42,37 +79,26 @@ gulp.task('minify', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('testscripts', function () {
-  return gulp.src([
-      'src/*.js'
-    ])
-    .pipe(jshint());
-});
-
-gulp.task('watch', function () {
-  gulp.watch('src/*.js', function () {
-    gulp.start('testscripts');
-  });
-});
-
-gulp.task('serve',  function() {
-  browserSync.init({
-    server: {
-      baseDir: './'
-    }
-  });
-});
-
 gulp.task('clean', function (done) {
-  del('dist/*.js', done);
+  del(['dist/*.js', 'coverage'], done);
 });
 
-gulp.task('test', ['clean', 'testscripts'], function (done) {
-  runTests(true, done, true);
+/** single run */
+gulp.task('test', function (done) {
+  runKarma('karma.conf.js', {
+    autoWatch: false,
+    singleRun: true,
+    preprocessors: {'src/*.js': ['coverage']}
+  }, done);
 });
 
-gulp.task('test:auto', ['watch'], function (done) {
-  runTests(false, done, false);
+/** continuous ... using karma to watch */
+gulp.task('test:auto', function (done) {
+  runKarma('karma.conf.js', {
+    autoWatch: true,
+    singleRun: false,
+    preprocessors: {}
+  }, done);
 });
 
 gulp.task('default', ['clean', 'minify']);

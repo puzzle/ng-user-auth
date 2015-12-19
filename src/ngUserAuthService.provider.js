@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('ngUserAuth')
+    .module('ngUserAuth.service', ['ngLodash', 'LocalStorageModule'])
     .provider('ngUserAuthService', NgUserAuthServiceProvider);
 
   function NgUserAuthServiceProvider() {
@@ -10,6 +10,8 @@
     var unauthorizedUrl = '/unauthorized';
     var requestedPathParameterName = 'requestedPath';
     var abortRequestsUrlPrefix = '/';
+    var logoutActions = [];
+    var defaultLoggedInPermissionName = 'token_read';
 
     this.setApiEndpoint = function (value) {
       apiEndpoint = value;
@@ -27,12 +29,20 @@
       abortRequestsUrlPrefix = value;
     };
 
+    this.addLogoutAction = function (callback) {
+      logoutActions.push(callback);
+    };
+
+    this.setDefaultLoggedInPermissionName = function (permissionName) {
+      defaultLoggedInPermissionName = permissionName;
+    };
+
     this.$get = ngUserAuthService;
 
     //////////
 
     /** @ngInject */
-    function ngUserAuthService($rootScope, lodash, localStorageService, $location, $http) {
+    function ngUserAuthService($rootScope, lodash, $injector, localStorageService, $location) {
 
       var AUTH_INFO_CHANGED_EVENT_NAME = 'ngUserAuth:userPermissionsChanged';
       var LOGIN_STATE_CHANGED_EVENT_NAME = 'ngUserAuth:userLoginStateChanged';
@@ -47,6 +57,7 @@
         logout: logout,
         getApiEndpoint: getApiEndpoint,
         getAbortRequestsUrlPrefix: getAbortRequestsUrlPrefix,
+        getDefaultLoggedInPermissionName: getDefaultLoggedInPermissionName,
         getUserToken: getUserToken,
         clearUserToken: clearUserToken,
         getUserAuthInfo: getUserAuthInfo,
@@ -59,7 +70,19 @@
 
       //////////
 
+      function getHttpService() {
+        // prevent circular dependency ngUserAuthService <- ngUserAuthInterceptor <- $http <- ngUserAuthService by injecting $http only when needed
+        return $injector.get('$http');
+      }
+
       function goToLoginScreen() {
+        // call logout actions so the application can do stuff like close dialog windows, clear local storage or cookies.
+        // call the callbacks with the $injector as an argument so they can access other Angular services.
+        lodash.forEach(logoutActions, function (callback) {
+          callback($injector);
+        });
+
+        // now redirect to the login page
         var path = $location.path();
         var currentState = findCurrentStateByUrl(path);
         if (path.indexOf(unauthorizedUrl) < 0 && (!currentState || !currentState.data || !currentState.data.anonymousAccessAllowed)) {
@@ -83,12 +106,12 @@
       }
 
       function login(credentials) {
-        userAuthInfoPromise = $http.post(apiEndpoint, credentials).then(saveUserAuthInfo);
+        userAuthInfoPromise = getHttpService().post(apiEndpoint, credentials).then(saveUserAuthInfo);
         return userAuthInfoPromise;
       }
 
       function logout() {
-        return $http.delete(apiEndpoint).then(function () {
+        return getHttpService().delete(apiEndpoint).then(function () {
           clearUserToken();
         });
       }
@@ -101,9 +124,13 @@
         return abortRequestsUrlPrefix;
       }
 
+      function getDefaultLoggedInPermissionName() {
+        return defaultLoggedInPermissionName;
+      }
+
       function getUserAuthInfo() {
         if (!userAuthInfoPromise) {
-          userAuthInfoPromise = $http.get(apiEndpoint).then(saveUserAuthInfo);
+          userAuthInfoPromise = getHttpService().get(apiEndpoint).then(saveUserAuthInfo);
         }
         return userAuthInfoPromise;
       }
