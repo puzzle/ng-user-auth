@@ -12,7 +12,6 @@ function listFiles() {
   return wiredep(wiredepOptions).js
     .concat([
       'src/*.js',
-      'src/*.mock.js',
       'src/*.spec.js'
     ]);
 }

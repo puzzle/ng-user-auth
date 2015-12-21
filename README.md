@@ -1,6 +1,6 @@
 # ng-user-auth
 
-[![Build Status](https://img.shields.io/travis/puzzle/ng-user-auth.svg)](https://travis-ci.org/puzzle/ng-user-auth)
+[![Build Status](https://img.shields.io/travis/puzzle/ng-user-auth.svg)](https://travis-ci.org/puzzle/ng-user-auth) [![Code Climate](https://codeclimate.com/github/puzzle/ng-user-auth/badges/gpa.svg)](https://codeclimate.com/github/puzzle/ng-user-auth)
 
 User authentication and authorization module for AngularJS.
 
