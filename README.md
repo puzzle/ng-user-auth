@@ -26,64 +26,83 @@ Follow these steps to add the ng-user-auth module to your application:
 Configure the `ngUserAuthServiceProvider` to adjust it to your application's needs:
 
 ```
-myApp.config(["ngUserAuthServiceProvider", function(ngUserAuthServiceProvider) {
+myApp.config(['ui.router', 'ngUserAuthServiceProvider', function($urlRouterProvider, ngUserAuthServiceProvider) {
   // backend/server REST URI that will be called to get the authentication and authorization information
   ngUserAuthServiceProvider.setApiEndpoint('/authentication');
-  
+
   // client side UI route URL that the user will be redirected to if he is not authenticated
   ngUserAuthServiceProvider.setUnauthorizedUrl('/unauthorized');
-  
+
   // request parameter that contains the originally requested path the user wanted to navigate to.
   // this is appended to the 'unauthorized' URL
   ngUserAuthServiceProvider.setRequestedPathParameterName('requestedPath');
-  
+
   // URLs starting with this prefix will be cancelled if a HTTP status code 401 is returned to prevent multiple
   // redirects to the 'unauthorized' URL
   ngUserAuthServiceProvider.setAbortRequestsUrlPrefix('/');
-  
+
   // add functions that will be called when the user is logged out
   ngUserAuthServiceProvider.addLogoutAction(function ($injector) {
     $injector.get('$mdDialog').hide();
   });
-  
+
   // the default permission name that every user needs to have to signal he is logged in
   ngUserAuthServiceProvider.setDefaultLoggedInPermissionName('token_read');
+
+  // in case you need a default/otherwise route, let ngUserAuth handle it by creating a handler function
+  $urlRouterProvider.otherwise(ngUserAuthServiceProvider.getOtherwiseRouteHandler('/home'));
 }]);
 ```
 
 ## UI route based authorization
 Here are some basic examples. For further details please consult the demo application.
 ```
-    $stateProvider
-      // every state that does not have the data.anonymousAccessAllowed is protected and the user needs
-      // to be logged in to visit it. if there are no permissions specified, at least the default permission
-      // that can be set with setDefaultLoggedInPermissionName needs to be present
-      .state('home', {
-        url: '/home',
-        template: '<h1>Home</h1>'
-      })
-      
-      // special permission required
-      .state('secure', {
-        url: '/secure',
-        template: '<h1>Secure</h1>',
-        data: {
-          hasPermission: 'secret_agent',
-        }
-      })
-      
-      // anonymous access needs to be allowed on the login and logout URIs
-      .state('login', {
-        url: '/login',
-        template: '<login></login>',
-        data: {
-          anonymousAccessAllowed: true
-        }
-      })
+$stateProvider
+  // every state that does not have the data.anonymousAccessAllowed is protected and the user needs
+  // to be logged in to visit it. if there are no permissions specified, at least the default permission
+  // that can be set with setDefaultLoggedInPermissionName needs to be present
+  .state('home', {
+    url: '/home',
+    template: '<h1>Home</h1>'
+  })
+
+  // special permission required
+  .state('secure', {
+    url: '/secure',
+    template: '<h1>Secure</h1>',
+    data: {
+      hasPermission: 'secret_agent',
+    }
+  })
+
+  // anonymous access needs to be allowed on the login and logout URIs
+  .state('login', {
+    url: '/login',
+    template: '<login></login>',
+    data: {
+      anonymousAccessAllowed: true
+    }
+  })
 ```
 
-## Element based authorization
-TODO
+## Element/directive based authorization
+```
+<div ng-user-auth has-permission="admin">
+  <!-- this element is only shown if the user has the permission 'admin' -->
+</div>
+
+<div ng-user-auth has-permission="['admin', 'staff']">
+  <!-- this element is only shown if the user has both the permission 'admin' AND 'staff'-->
+</div>
+
+<div ng-user-auth has-any-permission="['admin', 'superuser']">
+  <!-- this element is only shown if the user has any of the permissions 'admin' OR 'staff' -->
+</div>
+
+<div ng-user-auth lacks-permission="superuser">
+  <!-- this element is only shown if the user does NOT have the permission 'superuser' -->
+</div>
+```
 
 ## Running the example application
 If you want to clone the repo and run the example application please follow these steps:
@@ -96,5 +115,3 @@ This will download all dependencies and tools that are needed to run the demo:
 ## Run example/demo page
 This will start a web server on port 3000 (and on 3001 with [Browser Sync](https://github.com/BrowserSync/browser-sync) enabled):
 * npm start
-
-

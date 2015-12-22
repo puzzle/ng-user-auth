@@ -37,6 +37,25 @@
       defaultLoggedInPermissionName = permissionName;
     };
 
+    this.getOtherwiseRouteHandler = function (defaultRoute) {
+      var otherwiseRouteRequested = false;
+
+      return function ($injector, $location) {
+        var ngUserAuthService = $injector.get('ngUserAuthService');
+        var currentLocation = $location.path();
+        var encodedRoute = encodeURIComponent(defaultRoute);
+
+        // insist on redirecting to default route only if user is logged in or the default route
+        // is not yet in the requestedPath parameter of the unautzorized URL
+        if (ngUserAuthService.isLoggedIn() || (currentLocation.indexOf(defaultRoute) < 0 && currentLocation.indexOf(encodedRoute) < 0)) {
+          if (!otherwiseRouteRequested) {
+            $location.url(defaultRoute);
+            otherwiseRouteRequested = true;
+          }
+        }
+      }
+    };
+
     this.$get = ngUserAuthService;
 
     //////////
@@ -75,7 +94,7 @@
         return $injector.get('$http');
       }
 
-      function goToLoginScreen() {
+      function goToLoginScreen(desiredState) {
         // call logout actions so the application can do stuff like close dialog windows, clear local storage or cookies.
         // call the callbacks with the $injector as an argument so they can access other Angular services.
         lodash.forEach(logoutActions, function (callback) {
@@ -85,18 +104,22 @@
         // now redirect to the login page
         var path = $location.path();
         var currentState = findCurrentStateByUrl(path);
-        if (path.indexOf(unauthorizedUrl) < 0 && (!currentState || !currentState.data || !currentState.data.anonymousAccessAllowed)) {
-          $location.url(unauthorizedUrl + '?' + requestedPathParameterName + '=' + path);
+        if ($location.$$search[requestedPathParameterName] === '/' && desiredState && desiredState.url) {
+          $location.url(unauthorizedUrl + '?' + requestedPathParameterName + '=' + desiredState.url);
+        } else {
+          if (path.indexOf(unauthorizedUrl) < 0 && (!currentState || !currentState.data || !currentState.data.anonymousAccessAllowed)) {
+            $location.url(unauthorizedUrl + '?' + requestedPathParameterName + '=' + path);
+          }
         }
       }
-      
+
       function findCurrentStateByUrl(path) {
         var allStates = $injector.get('$state').get();
-  
+
         var index = lodash.findIndex(allStates, function (state) {
           return state.url === path;
         });
-  
+
         return allStates[index];
       }
 

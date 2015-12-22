@@ -35,7 +35,7 @@
             stateParams.lacksPermission);
 
           if (!ngUserAuthInfoService.isLoggedIn()) {
-            ngUserAuthService.goToLoginScreen();
+            ngUserAuthService.goToLoginScreen(toState);
           } else if (!check) {
             doRedirect(stateParams.redirectTo, toParams);
           } else {
