@@ -44,7 +44,7 @@
             }
           }
         }, function () {
-          doRedirect(stateParams.redirectTo, toParams);
+          return $state.go('error', toParams);
         });
 
         // when the promise was not immediately resolved, it means we aren't ready yet.
