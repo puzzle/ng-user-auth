@@ -18,7 +18,7 @@ app.use(express.static(__dirname + '/../static'));
 app.use(express.static(__dirname + '/../..'));
 
 app.get('/authentication', function (req, res) {
-  if (!req.headers.authorization || !req.headers.authorization === 'Bearer mySecureToken') {
+  if (!req.headers.authorization || req.headers.authorization !== 'Bearer mySecureToken') {
     res.statusCode = 401;
   } else {
     res.setHeader('Content-Type', 'application/json');
