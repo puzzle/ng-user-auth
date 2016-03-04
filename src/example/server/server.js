@@ -14,8 +14,8 @@ var app = express();
 
 app.use(logger);
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../static'));
-app.use(express.static(__dirname + '/../..'));
+app.use(express.static(__dirname + '/../../../dist'));
+app.use(express.static(__dirname + '/..'));
 
 app.get('/authentication', function (req, res) {
   if (!req.headers.authorization || req.headers.authorization !== 'Bearer mySecureToken') {

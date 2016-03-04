@@ -10,6 +10,9 @@ coverage
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+/dist/*.bundle.js
+/dist/*.bundle.js.map
+
 node_modules
 
 .idea
