@@ -134,7 +134,7 @@
       }
 
       function logout() {
-        return getHttpService().delete(apiEndpoint).then(function () {
+        return getHttpService().delete(apiEndpoint, {noCancelOnRouteChange: true}).finally(function () {
           clearUserToken();
         });
       }
