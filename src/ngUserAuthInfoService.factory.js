@@ -134,24 +134,12 @@
     }
 
     function checkPermissions(checkHasPermission, checkHasAnyPermission, checkLacksPermission) {
-      var checkOk = true;
-
       // hide if user does not have all required permissions
-      if (!hasPermission(checkHasPermission)) {
-        checkOk = false;
-      }
-
-      // hide if user does not have at least one of the permissions
-      if (!hasAnyPermission(checkHasAnyPermission)) {
-        checkOk = false;
-      }
-
-      // hide if user does have some of the forbidden permissions
-      if (!lacksPermission(checkLacksPermission)) {
-        checkOk = false;
-      }
-
-      return checkOk;
+      return hasPermission(checkHasPermission) &&
+        // hide if user does not have at least one of the permissions
+        hasAnyPermission(checkHasAnyPermission) &&
+        // hide if user does have some of the forbidden permissions
+        lacksPermission(checkLacksPermission);
     }
   }
 })();
