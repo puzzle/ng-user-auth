@@ -53,7 +53,7 @@
 
     function handleResponseError(response) {
       // if the request has been cancelled, don't do anything
-      if (response.config.timeout.isGloballyCancelled) {
+      if (response.config && response.config.timeout && response.config.timeout.isGloballyCancelled) {
         return $q.defer().promise;
       } else {
         completeRequest(response.config);
