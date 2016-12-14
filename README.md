@@ -13,8 +13,6 @@ User authentication and authorization module for AngularJS.
 * Integrates with `angular-ui-router` and adds route based authorization
 * Provides a directive that can be used for element based authorization
 
-This is work in progress, please be patient. We'll add a HOW TO USE section here as soon as the module is ready to be used.
-
 ## Integration into your application
 Follow these steps to add the ng-user-auth module to your application:
 * Clone the repo
@@ -25,7 +23,7 @@ Follow these steps to add the ng-user-auth module to your application:
 ## Configuration
 Configure the `ngUserAuthServiceProvider` to adjust it to your application's needs:
 
-```
+```javascript
 myApp.config(['ui.router', 'ngUserAuthServiceProvider', function($urlRouterProvider, ngUserAuthServiceProvider) {
   // backend/server REST URI that will be called to get the authentication and authorization information
   ngUserAuthServiceProvider.setApiEndpoint('/authentication');
@@ -56,7 +54,7 @@ myApp.config(['ui.router', 'ngUserAuthServiceProvider', function($urlRouterProvi
 
 ## UI route based authorization
 Here are some basic examples. For further details please consult the demo application.
-```
+```javascript
 $stateProvider
   // every state that does not have the data.anonymousAccessAllowed is protected and the user needs
   // to be logged in to visit it. if there are no permissions specified, at least the default permission
@@ -86,7 +84,7 @@ $stateProvider
 ```
 
 ## Element/directive based authorization
-```
+```html
 <div ng-user-auth has-permission="admin">
   <!-- this element is only shown if the user has the permission 'admin' -->
 </div>
@@ -102,6 +100,26 @@ $stateProvider
 <div ng-user-auth lacks-permission="superuser">
   <!-- this element is only shown if the user does NOT have the permission 'superuser' -->
 </div>
+```
+
+## Query/show login state
+```javascript
+angular
+  .module('ngUserAuthSample', ['ngUserAuth'])
+  .run(sampleRun);
+    
+function sampleRun($rootScope, ngUserAuthService, ngUserAuthInfoService) {
+  $rootScope.authService = ngUserAuthService;
+  $rootScope.authInfoService = ngUserAuthInfoService;
+}
+```
+```html
+    <pre>
+      <!-- Here's some values to keep an eye on in the sample. -->
+        ngAuthService.getUserToken(): {{authService.getUserToken()}}
+        ngAuthInfoService.isLoggedIn(): {{authInfoService.isLoggedIn()}}
+        ngAuthInfoService.getUser(): {{authInfoService.getUser()}}
+    </pre>
 ```
 
 ## Running the example application
