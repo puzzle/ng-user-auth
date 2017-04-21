@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "4.1"
+  - "6.10.2"
 
 script:
   - ./node_modules/karma/bin/karma start karma.conf.js
