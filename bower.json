@@ -9,9 +9,9 @@
   "main": "./dist/ng-user-auth.min.js",
   "dependencies": {
     "jquery": "~2.1.4",
-    "angular": "^1.4",
-    "angular-local-storage": "~0.2.3",
-    "angular-ui-router": "~0.2.15",
+    "angular": "^1.6.4",
+    "angular-local-storage": "~0.2.7",
+    "angular-ui-router": "~0.4.2",
     "ng-lodash": "~0.4.0"
   },
   "devDependencies": {
