@@ -15,7 +15,7 @@ var karmaParseConfig = require('karma/lib/config').parseConfig;
 
 var banner = ['/**',
   ' * ng-user-auth <%= pkg.version %>',
-  ' * (c) 2016 <%= pkg.author.name %>',
+  ' * (c) 2017 <%= pkg.author.name %>',
   ' * License: <%= pkg.license %>',
   ' */',
   ''].join('\n');

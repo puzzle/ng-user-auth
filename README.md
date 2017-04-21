@@ -46,6 +46,16 @@ myApp.config(['ui.router', 'ngUserAuthServiceProvider', function($urlRouterProvi
 
   // the default permission name that every user needs to have to signal he is logged in
   ngUserAuthServiceProvider.setDefaultLoggedInPermissionName('token_read');
+  
+  // in case you want to periodically check the validity of the session.
+  // don't forget to _NOT_ extend the validity of the token during the check in the backend, otherwise
+  // the session will live forever with this check
+  ngUserAuthServiceProvider.setSessionCheckSettings({
+        enabled: true, // should the check be enabled?
+        checkUrl: '/sessioncheck', // endpoint URL for the HTTP GET
+        interval: 30000, // interval in milliseconds
+        onSessionInvalid: function () {} // callback function if session is invalid
+  });
 
   // in case you need a default/otherwise route, let ngUserAuth handle it by creating a handler function
   $urlRouterProvider.otherwise(ngUserAuthServiceProvider.getOtherwiseRouteHandler('/home'));
@@ -133,3 +143,9 @@ This will download all dependencies and tools that are needed to run the demo:
 ## Run example/demo page
 This will start a web server on port 3000 (and on 3001 with [Browser Sync](https://github.com/BrowserSync/browser-sync) enabled):
 * npm start
+
+# Changelog
+
+* v1.1.0 (2017-04-21): New feature: session check
+* v1.0.7 (2016-10-20): Fixed bug if response config doesn't have a timeout
+* v1.0.6 (2016-08-30): Fix logout issue, merge pull request #2

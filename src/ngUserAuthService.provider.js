@@ -6,12 +6,19 @@
     .provider('ngUserAuthService', NgUserAuthServiceProvider);
 
   function NgUserAuthServiceProvider() {
+
     var apiEndpoint = '/authentication';
     var unauthorizedUrl = '/unauthorized';
     var requestedPathParameterName = 'requestedPath';
     var abortRequestsUrlPrefix = '/';
     var logoutActions = [];
     var defaultLoggedInPermissionName = 'token_read';
+    var sessionCheckSettings = {
+      enabled: false,
+      checkUrl: '/sessioncheck',
+      interval: 30000,
+      onSessionInvalid: function () {}
+    };
 
     this.setApiEndpoint = function (value) {
       apiEndpoint = value;
@@ -35,6 +42,10 @@
 
     this.setDefaultLoggedInPermissionName = function (permissionName) {
       defaultLoggedInPermissionName = permissionName;
+    };
+
+    this.setSessionCheckSettings = function (value) {
+      sessionCheckSettings = value;
     };
 
     this.getOtherwiseRouteHandler = function (defaultRoute) {
@@ -61,14 +72,14 @@
     //////////
 
     /** @ngInject */
-    function ngUserAuthService($rootScope, lodash, $injector, localStorageService, $location) {
+    function ngUserAuthService($rootScope, $injector, $location, $interval, lodash, localStorageService) {
 
       var AUTH_INFO_CHANGED_EVENT_NAME = 'ngUserAuth:userPermissionsChanged';
       var LOGIN_STATE_CHANGED_EVENT_NAME = 'ngUserAuth:userLoginStateChanged';
       var USER_TOKEN_STORAGE_KEY = 'user.token';
 
       // user and session information
-      var userToken, userAuthInfoPromise;
+      var userToken, userAuthInfoPromise, sessionCheckInterval;
 
       var service = {
         isLoggedIn: isLoggedIn,
@@ -85,9 +96,37 @@
         LOGIN_STATE_CHANGED_EVENT_NAME: LOGIN_STATE_CHANGED_EVENT_NAME
       };
 
+      activate();
+
       return service;
 
       //////////
+
+      function activate() {
+        if (sessionCheckSettings && sessionCheckSettings.enabled === true) {
+          startSessionCheck();
+        }
+      }
+
+      function startSessionCheck() {
+        sessionCheckInterval = $interval(checkSession, sessionCheckSettings.interval);
+      }
+
+      function stopSessionCheck() {
+        if (sessionCheckInterval) {
+          $interval.cancel(sessionCheckInterval);
+        }
+      }
+
+      function checkSession() {
+        getHttpService().get(sessionCheckSettings.checkUrl).catch(function (error) {
+          // forward failure to registered callback
+          if (sessionCheckSettings && lodash.isFunction(sessionCheckSettings.onSessionInvalid)) {
+            sessionCheckSettings.onSessionInvalid(error);
+          }
+          stopSessionCheck();
+        });
+      }
 
       function getHttpService() {
         // prevent circular dependency ngUserAuthService <- ngUserAuthInterceptor <- $http <- ngUserAuthService by injecting $http only when needed
@@ -100,6 +139,7 @@
         lodash.forEach(logoutActions, function (callback) {
           callback($injector);
         });
+        stopSessionCheck();
 
         // now redirect to the login page
         var path = $location.path();
@@ -129,11 +169,15 @@
       }
 
       function login(credentials) {
-        userAuthInfoPromise = getHttpService().post(apiEndpoint, credentials).then(saveUserAuthInfo);
+        userAuthInfoPromise = getHttpService().post(apiEndpoint, credentials).then(function (response) {
+          saveUserAuthInfo(response);
+          startSessionCheck();
+        });
         return userAuthInfoPromise;
       }
 
       function logout() {
+        stopSessionCheck();
         return getHttpService().delete(apiEndpoint, {noCancelOnRouteChange: true}).finally(function () {
           clearUserToken();
         });
@@ -149,6 +193,10 @@
 
       function getDefaultLoggedInPermissionName() {
         return defaultLoggedInPermissionName;
+      }
+
+      function getSessionCheckSettings() {
+        return sessionCheckSettings;
       }
 
       function getUserAuthInfo() {

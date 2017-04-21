@@ -10,13 +10,11 @@
     // promises needed to cancel $http calls that have been intercepted
     var cancelPromises = [];
 
-    var service = {
+    return {
       request: handleRequest,
       response: handleResponse,
       responseError: handleResponseError
     };
-
-    return service;
 
     //////////
 
