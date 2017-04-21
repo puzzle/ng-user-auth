@@ -103,7 +103,7 @@
       //////////
 
       function activate() {
-        if (sessionCheckSettings && sessionCheckSettings.enabled === true) {
+        if (sessionCheckSettings && sessionCheckSettings.enabled === true && isLoggedIn()) {
           startSessionCheck();
         }
       }
@@ -193,10 +193,6 @@
 
       function getDefaultLoggedInPermissionName() {
         return defaultLoggedInPermissionName;
-      }
-
-      function getSessionCheckSettings() {
-        return sessionCheckSettings;
       }
 
       function getUserAuthInfo() {

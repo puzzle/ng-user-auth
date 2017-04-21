@@ -146,6 +146,7 @@ This will start a web server on port 3000 (and on 3001 with [Browser Sync](https
 
 # Changelog
 
+* v1.1.1 (2017-04-21): Bugfix: only start session check when already logged in
 * v1.1.0 (2017-04-21): New feature: session check
 * v1.0.7 (2016-10-20): Fixed bug if response config doesn't have a timeout
 * v1.0.6 (2016-08-30): Fix logout issue, merge pull request #2
