@@ -13,7 +13,7 @@
   },
   "author": "Puzzle ITC <info@puzzle.ch>",
   "devDependencies": {
-    "angular-mocks": "^1.6.4",
+    "angular-mocks": "^1.5.11",
     "autoprefixer": "^6.7.7",
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
@@ -74,7 +74,7 @@
   ],
   "homepage": "https://github.com/puzzle/ng-user-auth",
   "dependencies": {
-    "angular": "^1.6.4",
+    "angular": "^1.5.11",
     "angular-local-storage": "^0.2.7",
     "angular-ui-router": "^0.4.2",
     "lodash": "^4.17.4"
