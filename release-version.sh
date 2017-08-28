@@ -12,3 +12,4 @@ yarn run version -- update $RELEASE_VERSION
 git add .
 git commit -m "Release version $RELEASE_VERSION"
 git push && git push --tags
+npm publish
