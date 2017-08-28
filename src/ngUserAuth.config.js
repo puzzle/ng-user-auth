@@ -1,13 +1,15 @@
-(function () {
-  'use strict';
+import angular from 'angular';
+import uaInterceptor from './ngUserAuthInterceptor.factory';
 
-  angular
-    .module('ngUserAuth.config', [])
-    .config(config);
+export default angular
+  .module('ngUserAuth.config', [
+    uaInterceptor,
+  ])
+  .config(config)
+  .name;
 
-  /** @ngInject */
-  function config($httpProvider) {
-    // register custom security interceptor
-    $httpProvider.interceptors.push('ngUserAuthInterceptor');
-  }
-})();
+/** @ngInject */
+function config($httpProvider) {
+  // register custom security interceptor
+  $httpProvider.interceptors.push('ngUserAuthInterceptor');
+}

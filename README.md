@@ -15,8 +15,9 @@ User authentication and authorization module for AngularJS.
 
 ## Integration into your application
 Follow these steps to add the ng-user-auth module to your application:
-* Clone the repo
-* Add the file `dist/ng-user-auth.min.js` to your HTML header
+* Clone the repo and add the file `dist/ng-user-auth.min.js` to your HTML header
+* **OR** add NPM package to your application: `npm install --save ng-user-auth`
+* **OR** add yarn package to your application: `yarn add ng-user-auth`
 * Configure the module
 * Add permission based protection to your UI routes or HTML elements
 
@@ -95,19 +96,19 @@ $stateProvider
 
 ## Element/directive based authorization
 ```html
-<div ng-user-auth has-permission="admin">
+<div ua-permission="admin">
   <!-- this element is only shown if the user has the permission 'admin' -->
 </div>
 
-<div ng-user-auth has-permission="['admin', 'staff']">
+<div ua-permission="['admin', 'staff']">
   <!-- this element is only shown if the user has both the permission 'admin' AND 'staff'-->
 </div>
 
-<div ng-user-auth has-any-permission="['admin', 'superuser']">
+<div ua-any-permission="['admin', 'superuser']">
   <!-- this element is only shown if the user has any of the permissions 'admin' OR 'staff' -->
 </div>
 
-<div ng-user-auth lacks-permission="superuser">
+<div ua-lacks-permission="superuser">
   <!-- this element is only shown if the user does NOT have the permission 'superuser' -->
 </div>
 ```
@@ -134,18 +135,19 @@ function sampleRun($rootScope, ngUserAuthService, ngUserAuthInfoService) {
 
 ## Running the example application
 If you want to clone the repo and run the example application please follow these steps:
+
 ### Installation
 This will download all dependencies and tools that are needed to run the demo:
-* npm install -g bower
 * npm install
-* bower install
 
 ## Run example/demo page
-This will start a web server on port 3000 (and on 3001 with [Browser Sync](https://github.com/BrowserSync/browser-sync) enabled):
+This will start a web server on port 3000:
 * npm start
 
 # Changelog
 
+* v2.0.0 (2017-08-28): Use webpack to bundle application, change directive names
+                       to `ua-permission`, `ua-any-permission`, `ua-lacks-permission`
 * v1.1.2 (2017-04-21): Chore: update dependencies, fix Travis build
 * v1.1.1 (2017-04-21): Bugfix: only start session check when already logged in
 * v1.1.0 (2017-04-21): New feature: session check

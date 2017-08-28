@@ -5,14 +5,9 @@ node_js:
   - "6.10.2"
 
 script:
-  - ./node_modules/karma/bin/karma start karma.conf.js
+  - yarn run test
 
 before_script:
-  - npm install -g bower
-  - npm install
-  - bower install
+  - yarn install
 
-cache:
-  directories:
-    - node_modules
-    - bower_components
+cache: yarn
