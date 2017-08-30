@@ -146,6 +146,7 @@ This will start a web server on port 3000:
 
 # Changelog
 
+* v2.0.1 (2017-08-29): Fix module bundling issues
 * v2.0.0 (2017-08-28): Use webpack to bundle application, change directive names
                        to `ua-permission`, `ua-any-permission`, `ua-lacks-permission`
 * v1.1.2 (2017-04-21): Chore: update dependencies, fix Travis build
