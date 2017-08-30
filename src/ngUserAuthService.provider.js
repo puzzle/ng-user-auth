@@ -1,10 +1,10 @@
 import angular from 'angular';
-import LocalStorageModule from 'angular-local-storage';
+import 'angular-local-storage';
 import lodashWrapper from './lodash.wrapper';
 
 export default angular
   .module('ngUserAuth.service', [
-    LocalStorageModule,
+    'LocalStorageModule',
     lodashWrapper,
   ])
   .provider('ngUserAuthService', NgUserAuthServiceProvider)

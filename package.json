@@ -1,11 +1,11 @@
 {
   "name": "ng-user-auth",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "User authentication and authorization mdule for AngularJS.",
   "main": "dist/ng-user-auth.min.js",
-  "module": "src/ngUserAuth.module.js",
+  "module": "dist/ng-user-auth.node.min.js",
   "scripts": {
-    "build": "eslint src && rimraf dist && webpack --bail --progress --config config/webpack.prod.js",
+    "build": "eslint src && rimraf dist && webpack --bail --progress --config config/webpack.common.js",
     "server": "yarn run build && cd sample/server && node server.js",
     "test": "eslint src && karma start config/karma.conf.js",
     "test-watch": "karma start --auto-watch --no-single-run --browsers Chromium config/karma.conf.js",

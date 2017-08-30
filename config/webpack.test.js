@@ -2,9 +2,7 @@ const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.common.js');
 
-const ENV = process.env.NODE_ENV = process.env.ENV = 'test';
-
-module.exports = webpackMerge(commonConfig({ env: ENV }), {
+module.exports = webpackMerge(commonConfig[0], {
   devtool: 'inline-source-map',
 
   resolve: {
