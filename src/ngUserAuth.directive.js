@@ -32,13 +32,21 @@ function uaLacksPermission($rootScope, ngUserAuthInfoService) {
 }
 
 function makeLinkFn($rootScope, ngUserAuthInfoService, attrName, checkFn) {
-  return function linkNgUserAuth(scope, element, attrs) {
+  function parseAttribute(value) {
     // make sure that there will never be a property on the scope that matches a role name by providing an
     // empty isolated scope. otherwise the $eval() might have side effects
     const evalScope = $rootScope.$new(true);
-    const permissions = evalScope.$eval(attrs[attrName]) || attrs[attrName];
+    return evalScope.$eval(value) || value;
+  }
 
-    // closure so we can re-calculate when permissions change
+  return function linkNgUserAuth(scope, element, attrs) {
+    let permissions = parseAttribute(attrs[attrName]);
+
+    attrs.$observe(attrName, (value) => {
+      permissions = parseAttribute(value);
+      toggleVisibilityBasedOnPermission();
+    });
+
     function toggleVisibilityBasedOnPermission() {
       if (checkFn(permissions)) {
         element.show();
@@ -47,6 +55,7 @@ function makeLinkFn($rootScope, ngUserAuthInfoService, attrName, checkFn) {
       }
     }
 
+    // closure so we can re-calculate when permissions change
     toggleVisibilityBasedOnPermission();
     ngUserAuthInfoService.notifyOnAuthChange(toggleVisibilityBasedOnPermission);
   };

@@ -102,6 +102,44 @@ describe('ngUserAuth.directive', () => {
       // then
       expect(element.css('display')).toBe('none');
     });
+
+    it('toggles the element when checked permission name change', () => {
+      // when
+      $rootScope.currentState = 'new';
+      setupDirective('<div ua-permission="user_{{currentState}}"></div>');
+
+      // then
+      expect(element.css('display')).toBe('');
+      expect(ngUserAuthInfoServiceMock.userHasPermission).toHaveBeenCalledWith('user_new');
+      expect(callback).toEqual(jasmine.any(Function));
+
+      // when
+      ngUserAuthInfoServiceMock.userLacksPermission.calls.reset();
+      $rootScope.currentState = 'existing';
+      $rootScope.$digest();
+
+      // then
+      expect(ngUserAuthInfoServiceMock.userHasPermission).toHaveBeenCalledWith('user_existing');
+    });
+
+    it('toggles the element when checked permission name change, also for array', () => {
+      // when
+      $rootScope.currentState = 'new';
+      setupDirective('<div ua-permission="[\'user_{{currentState}}\', \'test_{{currentState}}\']"></div>');
+
+      // then
+      expect(element.css('display')).toBe('');
+      expect(ngUserAuthInfoServiceMock.userHasPermission).toHaveBeenCalledWith(['user_new', 'test_new']);
+      expect(callback).toEqual(jasmine.any(Function));
+
+      // when
+      ngUserAuthInfoServiceMock.userLacksPermission.calls.reset();
+      $rootScope.currentState = 'existing';
+      $rootScope.$digest();
+
+      // then
+      expect(ngUserAuthInfoServiceMock.userHasPermission).toHaveBeenCalledWith(['user_existing', 'test_existing']);
+    });
   });
 });
 
