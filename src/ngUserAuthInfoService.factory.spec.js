@@ -96,6 +96,7 @@ describe('ngUserAuthInfo.service', () => {
 
       // fail because of upper case
       expect(ngUserAuthInfoService.checkPermissions(['token_READ'])).toBeFalsy();
+      expect(ngUserAuthInfoService.checkPermissions('token_READ')).toBeFalsy();
       expect(ngUserAuthInfoService.checkPermissions([], [], ['superMAN'])).toBeTruthy();
       expect(ngUserAuthInfoService.checkPermissions([], ['USER'], [])).toBeFalsy();
     });

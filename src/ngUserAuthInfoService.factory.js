@@ -132,11 +132,16 @@ function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
     }
 
     if (!lodash.isArray(permissionArray)) {
-      return [permissionArray];
+      result = [permissionArray];
     }
 
     if (ngUserAuthService.shouldIgnoreCaseInRoleNames()) {
-      result = lodash.map(permissionArray, value => (value || '').toLowerCase());
+      result = lodash.map(result, (value) => {
+        if (lodash.isString(value)) {
+          return value.toLowerCase();
+        }
+        return value;
+      });
     }
 
     return result;

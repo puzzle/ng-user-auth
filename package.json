@@ -1,6 +1,6 @@
 {
   "name": "ng-user-auth",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "User authentication and authorization mdule for AngularJS.",
   "main": "dist/ng-user-auth.min.js",
   "module": "dist/ng-user-auth.node.min.js",

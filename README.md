@@ -145,6 +145,7 @@ This will start a web server on port 3000:
 * npm start
 
 # Changelog
+* v2.0.4 (2017-09-05): Fix toLowerCase problem
 * v2.0.3 (2017-09-05): Fix build
 * v2.0.2 (2017-09-05): Option to ignore case of permission names, watch attributes for changes
 * v2.0.1 (2017-08-29): Fix module bundling issues
