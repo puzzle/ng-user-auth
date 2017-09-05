@@ -8,6 +8,7 @@ if [ -z "$RELEASE_VERSION" ]; then
 fi
 
 yarn run version -- update $RELEASE_VERSION
+yarn run build
 
 git add .
 git commit -m "Release version $RELEASE_VERSION"
