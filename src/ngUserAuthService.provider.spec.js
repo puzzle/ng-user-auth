@@ -16,6 +16,7 @@ describe('ngUserAuth.provider', () => {
       });
       ngUserAuthServiceProvider.setDefaultLoggedInPermissionName('default.permission');
       ngUserAuthServiceProvider.setSessionCheckSettings({});
+      ngUserAuthServiceProvider.setIgnoreCaseInRoleNames(true);
 
       expect(ngUserAuthServiceProvider.getOtherwiseRouteHandler()).toEqual(jasmine.any(Function));
     });
@@ -34,6 +35,7 @@ describe('ngUserAuth.provider', () => {
       expect(ngUserAuthService.getApiEndpoint()).toEqual('/api');
       expect(ngUserAuthService.getAbortRequestsUrlPrefix()).toEqual('/abort');
       expect(ngUserAuthService.getDefaultLoggedInPermissionName()).toEqual('default.permission');
+      expect(ngUserAuthService.shouldIgnoreCaseInRoleNames()).toBeTruthy();
     });
   });
 });

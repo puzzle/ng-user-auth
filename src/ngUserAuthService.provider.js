@@ -17,6 +17,7 @@ function NgUserAuthServiceProvider() {
   let abortRequestsUrlPrefix = '/';
   const logoutActions = [];
   let defaultLoggedInPermissionName = 'token_read';
+  let ignoreCaseInRoleNames = false;
   let sessionCheckSettings = {
     enabled: false,
     checkUrl: '/sessioncheck',
@@ -47,6 +48,10 @@ function NgUserAuthServiceProvider() {
 
   this.setDefaultLoggedInPermissionName = (permissionName) => {
     defaultLoggedInPermissionName = permissionName;
+  };
+
+  this.setIgnoreCaseInRoleNames = (value) => {
+    ignoreCaseInRoleNames = value;
   };
 
   this.setSessionCheckSettings = (value) => {
@@ -94,6 +99,7 @@ function NgUserAuthServiceProvider() {
       getApiEndpoint,
       getAbortRequestsUrlPrefix,
       getDefaultLoggedInPermissionName,
+      shouldIgnoreCaseInRoleNames,
       getUserToken,
       clearUserToken,
       getUserAuthInfo,
@@ -196,6 +202,10 @@ function NgUserAuthServiceProvider() {
 
     function getDefaultLoggedInPermissionName() {
       return defaultLoggedInPermissionName;
+    }
+
+    function shouldIgnoreCaseInRoleNames() {
+      return ignoreCaseInRoleNames;
     }
 
     function getUserAuthInfo() {

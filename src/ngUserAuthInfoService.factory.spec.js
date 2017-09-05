@@ -3,7 +3,8 @@ import uaInfoService from './ngUserAuthInfoService.factory';
 
 describe('ngUserAuthInfo.service', () => {
   let loggedIn,
-    authInfo;
+    authInfo,
+    ignoreCase;
   let ngUserAuthInfoService,
     ngUserAuthServiceMock;
   let $rootScope;
@@ -17,10 +18,13 @@ describe('ngUserAuthInfo.service', () => {
     angular.mock.module(($provide) => {
       $provide.factory('ngUserAuthService', ($q) => {
         ngUserAuthServiceMock = jasmine.createSpyObj('ngUserAuthService', [
-          'isLoggedIn', 'getUserAuthInfo',
+          'isLoggedIn',
+          'getUserAuthInfo',
+          'shouldIgnoreCaseInRoleNames',
         ]);
         ngUserAuthServiceMock.isLoggedIn.and.callFake(() => loggedIn);
         ngUserAuthServiceMock.getUserAuthInfo.and.callFake(() => $q.when(authInfo));
+        ngUserAuthServiceMock.shouldIgnoreCaseInRoleNames.and.callFake(() => ignoreCase);
         ngUserAuthServiceMock.LOGIN_STATE_CHANGED_EVENT_NAME = 'test:login';
         ngUserAuthServiceMock.AUTH_INFO_CHANGED_EVENT_NAME = 'test:auth';
         return ngUserAuthServiceMock;
@@ -36,6 +40,7 @@ describe('ngUserAuthInfo.service', () => {
   describe('ngUserAuthInfoService', () => {
     beforeEach(() => {
       loggedIn = false;
+      ignoreCase = false;
       authInfo = {
         user: {
           person: {},
@@ -88,6 +93,33 @@ describe('ngUserAuthInfo.service', () => {
       expect(ngUserAuthInfoService.checkPermissions(['superman'], [], [])).toBeFalsy();
       expect(ngUserAuthInfoService.checkPermissions([], ['superman'], [])).toBeFalsy();
       expect(ngUserAuthInfoService.checkPermissions([], [], ['user'])).toBeFalsy();
+
+      // fail because of upper case
+      expect(ngUserAuthInfoService.checkPermissions(['token_READ'])).toBeFalsy();
+      expect(ngUserAuthInfoService.checkPermissions([], [], ['superMAN'])).toBeTruthy();
+      expect(ngUserAuthInfoService.checkPermissions([], ['USER'], [])).toBeFalsy();
+    });
+  });
+
+  describe('ngUserAuthInfoService ignore case', () => {
+    beforeEach(() => {
+      loggedIn = false;
+      ignoreCase = true;
+      authInfo = {
+        user: {
+          person: {},
+          type: 'SWOA',
+        },
+        permissions: ['token_read', 'user', 'admin'],
+      };
+      $rootScope.$broadcast(ngUserAuthServiceMock.AUTH_INFO_CHANGED_EVENT_NAME, authInfo);
+    });
+
+    it('should change login status on broadcast event', () => {
+      expect(ngUserAuthInfoService.checkPermissions(['token_READ'])).toBeTruthy();
+      expect(ngUserAuthInfoService.checkPermissions([], [], ['superMAN'])).toBeTruthy();
+      expect(ngUserAuthInfoService.checkPermissions([], ['USER'], [])).toBeTruthy();
+      expect(ngUserAuthInfoService.checkPermissions(['token_read', 'USER'])).toBeTruthy();
     });
   });
 });

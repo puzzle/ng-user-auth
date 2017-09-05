@@ -25,9 +25,9 @@ function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
     isReady,
     whenReady,
     getUser,
-    userHasPermission: hasPermission,
-    userHasAnyPermission: hasAnyPermission,
-    userLacksPermission: lacksPermission,
+    userHasPermission,
+    userHasAnyPermission,
+    userLacksPermission,
     checkPermissions,
   };
 
@@ -80,6 +80,9 @@ function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
 
     user = authInfo.user;
     userPermissions = authInfo.permissions;
+    if (ngUserAuthService.shouldIgnoreCaseInRoleNames()) {
+      userPermissions = lodash.map(userPermissions, value => (value || '').toLowerCase());
+    }
   }
 
   function handleError(error) {
@@ -87,7 +90,7 @@ function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
     ready = true;
   }
 
-  function hasPermission(requiredPermissions) {
+  function userHasPermission(requiredPermissions) {
     const permissions = sanitizePermissionArray(requiredPermissions);
 
     if (permissions.length === 0) {
@@ -96,7 +99,7 @@ function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
     return allPermissionsPresent(permissions);
   }
 
-  function hasAnyPermission(requiredPermissions) {
+  function userHasAnyPermission(requiredPermissions) {
     const permissions = sanitizePermissionArray(requiredPermissions);
 
     if (permissions.length === 0) {
@@ -105,7 +108,7 @@ function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
     return somePermissionsPresent(permissions);
   }
 
-  function lacksPermission(forbiddenPermissions) {
+  function userLacksPermission(forbiddenPermissions) {
     const permissions = sanitizePermissionArray(forbiddenPermissions);
 
     if (permissions.length === 0) {
@@ -123,6 +126,7 @@ function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
   }
 
   function sanitizePermissionArray(permissionArray) {
+    let result = permissionArray;
     if (permissionArray === undefined || lodash.isEmpty(permissionArray)) {
       return [];
     }
@@ -131,15 +135,19 @@ function ngUserAuthInfoService($q, ngUserAuthService, $rootScope, lodash) {
       return [permissionArray];
     }
 
-    return permissionArray;
+    if (ngUserAuthService.shouldIgnoreCaseInRoleNames()) {
+      result = lodash.map(permissionArray, value => (value || '').toLowerCase());
+    }
+
+    return result;
   }
 
   function checkPermissions(checkHasPermission, checkHasAnyPermission, checkLacksPermission) {
     // hide if user does not have all required permissions
-    return hasPermission(checkHasPermission) &&
+    return userHasPermission(checkHasPermission) &&
       // hide if user does not have at least one of the permissions
-      hasAnyPermission(checkHasAnyPermission) &&
+      userHasAnyPermission(checkHasAnyPermission) &&
       // hide if user does have some of the forbidden permissions
-      lacksPermission(checkLacksPermission);
+      userLacksPermission(checkLacksPermission);
   }
 }

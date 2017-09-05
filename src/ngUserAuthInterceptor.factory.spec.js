@@ -19,6 +19,7 @@ describe('ngUserAuth.interceptor', () => {
           'clearUserToken',
           'goToLoginScreen',
           'getAbortRequestsUrlPrefix',
+          'shouldIgnoreCaseInRoleNames',
         ]);
         ngUserAuthServiceMock.getUserToken.and.returnValue('foo');
         ngUserAuthServiceMock.getAbortRequestsUrlPrefix.and.returnValue('/bar');
