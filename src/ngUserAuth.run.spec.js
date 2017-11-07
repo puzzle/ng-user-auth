@@ -1,16 +1,19 @@
 import angular from 'angular';
+import 'angular-ui-router';
 import uaRun from './ngUserAuth.run';
 
 describe('ngUserAuth.run', () => {
   let $rootScope,
     $state,
     permissionOk,
+    ngUserAuthServiceMock,
     ngUserAuthInfoServiceMock;
 
   /**
    * Global injects and setups
    */
   beforeEach(() => {
+    angular.mock.module('ui.router');
     angular.mock.module(uaRun);
 
     angular.mock.module(($stateProvider, $provide) => {
@@ -73,6 +76,16 @@ describe('ngUserAuth.run', () => {
         ngUserAuthInfoServiceMock.isReady.and.returnValue(true);
         ngUserAuthInfoServiceMock.isLoggedIn.and.returnValue(true);
         return ngUserAuthInfoServiceMock;
+      });
+
+      $provide.factory('ngUserAuthService', ($injector) => {
+        ngUserAuthServiceMock = jasmine.createSpyObj('ngUserAuthServiceMock', [
+          'getStateChangeEventName', 'getStateChangeFunction', 'getDefaultLoggedInPermissionName',
+        ]);
+        ngUserAuthServiceMock.getStateChangeEventName.and.returnValue('$stateChangeStart');
+        ngUserAuthServiceMock.getStateChangeFunction.and.callFake(() => $injector.get('$state').go);
+        ngUserAuthServiceMock.getDefaultLoggedInPermissionName.and.returnValue('token_read');
+        return ngUserAuthServiceMock;
       });
     });
 

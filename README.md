@@ -145,6 +145,7 @@ This will start a web server on port 3000:
 * npm start
 
 # Changelog
+* v2.0.7 (2017-11-07): Further remove dependencies to ui-router
 * v2.0.5 (2017-11-07): Allow custom state resolver to make compatible with ngRoute,
                        remove dependency to ui-router, upgrade to angular-local-storage 0.2.7
 * v2.0.4 (2017-09-05): Fix toLowerCase problem

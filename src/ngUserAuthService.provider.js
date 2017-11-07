@@ -32,6 +32,8 @@ function NgUserAuthServiceProvider() {
 
     return allStates[index];
   };
+  let stateChangeEventName = '$stateChangeStart';
+  let stateChangeFunction = $injector => () => $injector.get('$state').go;
 
   this.setApiEndpoint = (value) => {
     apiEndpoint = value;
@@ -63,6 +65,14 @@ function NgUserAuthServiceProvider() {
 
   this.setSessionCheckSettings = (value) => {
     sessionCheckSettings = value;
+  };
+
+  this.setStateChangeEventName = (value) => {
+    stateChangeEventName = value;
+  };
+
+  this.setStateChangeFunction = (changeFn) => {
+    stateChangeFunction = changeFn;
   };
 
   this.setDefaultCurrentRouteResolver = (resolverFn) => {
@@ -115,6 +125,8 @@ function NgUserAuthServiceProvider() {
       clearUserToken,
       getUserAuthInfo,
       goToLoginScreen,
+      getStateChangeEventName,
+      getStateChangeFunction,
       AUTH_INFO_CHANGED_EVENT_NAME,
       LOGIN_STATE_CHANGED_EVENT_NAME,
     };
@@ -218,6 +230,14 @@ function NgUserAuthServiceProvider() {
         userAuthInfoPromise = getHttpService().get(apiEndpoint).then(saveUserAuthInfo);
       }
       return userAuthInfoPromise;
+    }
+
+    function getStateChangeEventName() {
+      return stateChangeEventName;
+    }
+
+    function getStateChangeFunction() {
+      return stateChangeFunction($injector);
     }
 
     function saveUserAuthInfo(httpResponse) {

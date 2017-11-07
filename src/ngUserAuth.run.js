@@ -13,9 +13,10 @@ export default angular
   .name;
 
 /** @ngInject */
-function runBlock($rootScope, lodash, ngUserAuthService, ngUserAuthInfoService, $state) {
+function runBlock($rootScope, lodash, ngUserAuthService, ngUserAuthInfoService) {
   // implement permissions on ui-router
-  $rootScope.$on('$stateChangeStart', handleStateChangeStart);
+  $rootScope.$on(ngUserAuthService.getStateChangeEventName(), handleStateChangeStart);
+  const changeState = ngUserAuthService.getStateChangeFunction();
 
   // ////////
 
@@ -43,9 +44,9 @@ function runBlock($rootScope, lodash, ngUserAuthService, ngUserAuthInfoService, 
         } else if (!check) {
           doRedirect(stateParams.redirectTo, toParams);
         } else if (event.defaultPrevented) {
-          $state.go(toState.name, toParams);
+          changeState(toState.name, toParams);
         }
-      }, () => $state.go('error', toParams));
+      }, () => changeState('error', toParams));
 
       // when the promise was not immediately resolved, it means we aren't ready yet.
       // so we stop the default behaviour and wait for the promise to resolve
@@ -101,8 +102,8 @@ function runBlock($rootScope, lodash, ngUserAuthService, ngUserAuthInfoService, 
         redirect = redirect();
       }
 
-      return $state.go(redirect, toParams);
+      return changeState(redirect, toParams);
     }
-    return $state.go('forbidden', toParams);
+    return changeState('forbidden', toParams);
   }
 }
