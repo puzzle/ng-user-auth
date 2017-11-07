@@ -1,12 +1,10 @@
 import angular from 'angular';
-import 'angular-ui-router';
 import lodashWrapper from './lodash.wrapper';
 import uaService from './ngUserAuthService.provider';
 import uaInfoService from './ngUserAuthInfoService.factory';
 
 export default angular
   .module('ngUserAuth.run', [
-    'ui.router',
     lodashWrapper,
     uaService,
     uaInfoService,
