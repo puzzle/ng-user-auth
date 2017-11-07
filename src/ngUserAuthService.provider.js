@@ -25,6 +25,13 @@ function NgUserAuthServiceProvider() {
     onSessionInvalid() {
     },
   };
+  let defaultCurrentRouteResolver = ($injector, lodash) => (path) => {
+    const allStates = $injector.get('$state').get();
+
+    const index = lodash.findIndex(allStates, state => state.url === path);
+
+    return allStates[index];
+  };
 
   this.setApiEndpoint = (value) => {
     apiEndpoint = value;
@@ -56,6 +63,10 @@ function NgUserAuthServiceProvider() {
 
   this.setSessionCheckSettings = (value) => {
     sessionCheckSettings = value;
+  };
+
+  this.setDefaultCurrentRouteResolver = (resolverFn) => {
+    defaultCurrentRouteResolver = resolverFn;
   };
 
   this.getOtherwiseRouteHandler = (defaultRoute) => {
@@ -154,22 +165,16 @@ function NgUserAuthServiceProvider() {
       });
       stopSessionCheck();
 
+      const resolverFn = defaultCurrentRouteResolver($injector, lodash);
+
       // now redirect to the login page
       const path = $location.path();
-      const currentState = findCurrentStateByUrl(path);
+      const currentState = resolverFn(path);
       if ($location.$$search[requestedPathParameterName] === '/' && desiredState && desiredState.url) {
         $location.url(`${unauthorizedUrl}?${requestedPathParameterName}=${desiredState.url}`);
       } else if (path.indexOf(unauthorizedUrl) < 0 && (!currentState || !currentState.data || !currentState.data.anonymousAccessAllowed)) {
         $location.url(`${unauthorizedUrl}?${requestedPathParameterName}=${path}`);
       }
-    }
-
-    function findCurrentStateByUrl(path) {
-      const allStates = $injector.get('$state').get();
-
-      const index = lodash.findIndex(allStates, state => state.url === path);
-
-      return allStates[index];
     }
 
     function isLoggedIn() {
