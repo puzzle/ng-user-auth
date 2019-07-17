@@ -19,8 +19,8 @@
   "devDependencies": {
     "@puzzleitc/frontend-guides": "^1.0.0",
     "@types/angular": "^1.6.31",
-    "@types/angular-mocks": "^1.5.11",
-    "@types/angular-ui-router": "^1.1.37",
+    "@types/angular-mocks": "^1.6.1",
+    "@types/angular-ui-router": "^1.1.40",
     "@types/jasmine": "^2.5.53",
     "@types/lodash": "^4.14.74",
     "angular-mocks": "~1.5.11",
@@ -40,10 +40,10 @@
     "karma": "^1.7.0",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-chrome-launcher": "^2.1.1",
-    "karma-coverage": "^1.1.1",
+    "karma-coverage": "^1.1.2",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
-    "karma-remap-coverage": "^0.1.4",
+    "karma-remap-coverage": "^0.1.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.31",
     "karma-webpack": "^2.0.3",
@@ -74,10 +74,10 @@
   ],
   "homepage": "https://github.com/puzzle/ng-user-auth",
   "dependencies": {
-    "angular": "~1.5.11",
+    "angular": "~1.6.10",
     "angular-local-storage": "^0.2.5",
-    "jquery": "^3.2.1",
-    "lodash": "^4.17.4"
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.13"
   },
   "engines": {
     "node": ">=6.10"
