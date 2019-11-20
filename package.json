@@ -74,7 +74,7 @@
   ],
   "homepage": "https://github.com/puzzle/ng-user-auth",
   "dependencies": {
-    "angular": "~1.6.10",
+    "angular": "~1.7.9",
     "angular-local-storage": "^0.2.5",
     "jquery": "^3.4.1",
     "lodash": "^4.17.13"
